@@ -4,31 +4,28 @@ const nameInput = document.getElementById("nameInput");
 const templateRadios = document.querySelectorAll('input[name="templateChoice"]');
 const templateOptions = document.querySelectorAll(".template-option");
 
-const templates = 
-{
+const templates = {
     template1: {
         image: new Image(),
         src: "assets/Eid-programming.jpeg",
-        textX: 400,
-        textY: 765,
+        textXRatio: 0.5,
+        textYRatio: 0.765,
         textColor: "#eeecec",
-        maxWidth: 500,
-        startFontSize: 36,
+        maxWidthRatio: 0.60,
+        startFontSizeRatio: 0.038,   // fraction of image height
         minFontSize: 10,
         fontWeight: "700",
         fontFamily: "'IBM Plex Sans Arabic'"
     },
-    
+
     template2: {
         image: new Image(),
         src: "assets/eid-template.png",
-
-        textX: 400,
-        textY: 800, // position of name on template 2
-
+        textXRatio: 0.5,
+        textYRatio: 0.800,
         textColor: "#080808",
-        maxWidth: 500,
-        startFontSize: 36,
+        maxWidthRatio: 0.60,
+        startFontSizeRatio: 0.038,
         minFontSize: 10,
         fontWeight: "700",
         fontFamily: "'IBM Plex Sans Arabic'"
@@ -39,32 +36,49 @@ let currentTemplateKey = "template1";
 let loadedImagesCount = 0;
 const totalImages = Object.keys(templates).length;
 
-Object.values(templates).forEach((template) => 
-    {
+Object.values(templates).forEach((template) => {
     template.image.src = template.src;
 
     template.image.onload = () => {
         loadedImagesCount++;
-
-        if (loadedImagesCount === totalImages) 
-            {
+        if (loadedImagesCount === totalImages) {
+            syncCanvasToTemplate();
             renderCanvas(nameInput.value.trim());
             canvas.classList.add("show");
         }
     };
-}
-);
+});
 
 function getCurrentTemplate() {
     return templates[currentTemplateKey];
 }
 
+
+function syncCanvasToTemplate() {
+    const templateConfig = getCurrentTemplate();
+    const image = templateConfig.image;
+
+    if (!image.complete || image.naturalWidth === 0) return;
+
+    const nw = image.naturalWidth;
+    const nh = image.naturalHeight;
+
+    
+    if (canvas.width !== nw || canvas.height !== nh) {
+        canvas.width  = nw;
+        canvas.height = nh;
+        canvas.style.aspectRatio = `${nw} / ${nh}`;
+    }
+}
+
 function fitTextToWidth(text, templateConfig) {
-    let fontSize = templateConfig.startFontSize;
+    const maxWidth   = canvas.width  * templateConfig.maxWidthRatio;
+    const startSize  = Math.round(canvas.height * templateConfig.startFontSizeRatio);
+    let fontSize     = Math.max(startSize, templateConfig.minFontSize);
 
     ctx.font = `${templateConfig.fontWeight} ${fontSize}px ${templateConfig.fontFamily}`;
 
-    while (ctx.measureText(text).width > templateConfig.maxWidth && fontSize > templateConfig.minFontSize) {
+    while (ctx.measureText(text).width > maxWidth && fontSize > templateConfig.minFontSize) {
         fontSize--;
         ctx.font = `${templateConfig.fontWeight} ${fontSize}px ${templateConfig.fontFamily}`;
     }
@@ -76,20 +90,28 @@ function renderCanvas(name) {
     const templateConfig = getCurrentTemplate();
     const image = templateConfig.image;
 
-    if (!image.complete) return;
+    if (!image.complete || image.naturalWidth === 0) return;
+
+   
+    syncCanvasToTemplate();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
     if (name !== "") {
-        ctx.fillStyle = templateConfig.textColor;
-        ctx.textAlign = "center";
+        ctx.fillStyle   = templateConfig.textColor;
+        ctx.textAlign   = "center";
         ctx.textBaseline = "middle";
+
+        const textX = canvas.width  * templateConfig.textXRatio;
+        const textY = canvas.height * templateConfig.textYRatio;
 
         const finalFontSize = fitTextToWidth(name, templateConfig);
         ctx.font = `${templateConfig.fontWeight} ${finalFontSize}px ${templateConfig.fontFamily}`;
 
-        ctx.fillText(name, templateConfig.textX, templateConfig.textY);
+        ctx.fillText(name, textX, textY);
     }
 }
 
@@ -101,12 +123,11 @@ templateRadios.forEach((radio) => {
     radio.addEventListener("change", () => {
         currentTemplateKey = radio.value;
 
-        templateOptions.forEach((option) => {
-            option.classList.remove("active");
-        });
-
+        templateOptions.forEach((option) => option.classList.remove("active"));
         radio.closest(".template-option").classList.add("active");
 
+        
+        syncCanvasToTemplate();
         renderCanvas(nameInput.value.trim());
     });
 });

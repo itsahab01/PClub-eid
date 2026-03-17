@@ -202,6 +202,9 @@ input[type="text"]:focus {
     color: var(--white);
     font-weight: 600;
     box-shadow: 0 0 0 1px rgba(70, 99, 222, 0.3), 0 4px 16px rgba(70, 99, 222, 0.15);
+    overflow: hidden;
+    object-fit: cover;
+
 }
 
 .template-option input {
@@ -219,7 +222,8 @@ input[type="text"]:focus {
 canvas {
     width: 100%;
     max-width: 380px;
-    aspect-ratio: 4 / 5;
+    height: auto;
+    display: block;
     border-radius: var(--radius-md);
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-subtle);
     opacity: 0;
@@ -357,6 +361,7 @@ button {
 
     canvas {
         max-width: 100%;
+        height: auto;
     }
 
     .header-content {
