@@ -1,170 +1,73 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>تهنئة العيد</title>
+    <title>تهنئة العيد</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-<style>
+    <link rel="stylesheet" href="style.css">
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:'Tajawal', sans-serif;
-}
-
-body{
-background:#f7f6f3;
-display:flex;
-align-items:center;
-justify-content:center;
-min-height:100vh;
-padding:20px;
-}
-
-.container{
-background:white;
-padding:30px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
-max-width:900px;
-width:100%;
-text-align:center;
-}
-
-h1{
-margin-bottom:10px;
-color:#444;
-}
-
-.subtitle{
-color:#777;
-margin-bottom:25px;
-}
-
-input{
-width:100%;
-max-width:320px;
-padding:12px;
-border-radius:8px;
-border:1px solid #ddd;
-font-size:16px;
-text-align:center;
-}
-
-.buttons{
-margin-top:15px;
-}
-
-button{
-padding:10px 20px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-size:15px;
-margin:5px;
-}
-
-.generate{
-background:#b59b6a;
-color:white;
-}
-
-.download{
-background:#444;
-color:white;
-}
-
-.preview{
-margin-top:30px;
-display:flex;
-justify-content:center;
-}
-
-canvas{
-width:100%;
-max-width:400px;
-aspect-ratio:4/5;
-border-radius:12px;
-box-shadow:0 6px 20px rgba(0,0,0,0.08);
-}
-
-</style>
 </head>
 
 <body>
+    <header class="header">
 
-<div class="container">
+        <div class="header-content">
 
-<h1>تهنئة العيد</h1>
-<p class="subtitle">اكتب اسمك ليظهر على بطاقة التهنئة</p>
+            <div class="club">
+                <img src="assets/logo.png" alt="Programming Club Logo">
+                <span>نادي البرمجة</span>
+            </div>
 
-<input type="text" id="nameInput" placeholder="الاســــم">
 
-<div class="buttons">
-<button class="generate" onclick="generateCard()">عرض التهنئة</button>
-<button class="download" onclick="downloadCard()">تحميل الصورة</button>
-</div>
 
-<div class="preview">
-<canvas id="card" width="800" height="1000"></canvas>
-</div>
+        </div>
 
-</div>
+    </header>
+    <div class="container">
 
-<script>
+        <h1>تهنئة العيد</h1>
+        <p class="subtitle">اكتب اسمك ليظهر على بطاقة التهنئة</p>
 
-const canvas = document.getElementById("card");
-const ctx = canvas.getContext("2d");
+        <input type="text" id="nameInput" placeholder="الاســــم">
 
-const template = new Image();
-template.src = "assets/eid-template.png";
 
-template.onload = () => {
-ctx.drawImage(template,0,0,800,1000);
-}
+        <div class="preview">
+            <canvas id="card" width="800" height="1000"></canvas>
+        </div>
+        <div class="buttons">
+            <button class="download" onclick="downloadCard()">تحميل الصورة</button>
+        </div>
+    </div>
+    <footer class="footer">
 
-function generateCard(){
+        <p>صُنعت بواسطة <strong>نادي البرمجة</strong></p>
 
-const name = document.getElementById("nameInput").value;
+        <div class="footer-social">
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+            <a href="https://x.com/pclub_nu?s=21" target="_blank">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
 
-ctx.drawImage(template,0,0,800,1000);
+            <a href="https://www.linkedin.com/company/pclub-nu/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
 
-ctx.font = "36px Tajawal";
-ctx.fillStyle = "#7a6a4a";
+        </div>
 
-ctx.textAlign = "right";
-ctx.textBaseline = "middle";
-
-let fontSize = 36;
-ctx.font = fontSize + "px Tajawal";
-
-while (ctx.measureText(name).width > 420){
-fontSize--;
-ctx.font = fontSize + "px Tajawal";
-}
-
-ctx.fillText(name,700,810);
-
-}
-
-function downloadCard(){
-
-const link = document.createElement("a");
-link.download = "eid-greeting.png";
-link.href = canvas.toDataURL();
-link.click();
-
-}
-
-</script>
+    </footer>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
