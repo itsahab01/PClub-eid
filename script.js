@@ -14,8 +14,8 @@ const templates = {
 
         textColor: "#eeecec" ,
         maxWidthRatio: 0.40,
-        startFontSizeRatio: 22,   // fraction of image height
-        minFontSize: 22,
+        startFontSizeRatio: 20,   // fraction of image height
+        minFontSize: 20,
         fontWeight: "bold",
         fontFamily: "'IBM Plex Sans Arabic'"
     },
@@ -29,8 +29,8 @@ const templates = {
 
         textColor: "#eeecec",
         maxWidthRatio: 0.60,
-        startFontSizeRatio: 22,
-        minFontSize: 22,
+        startFontSizeRatio: 20,
+        minFontSize: 20,
         fontWeight: "bold",
         fontFamily: "'IBM Plex Sans Arabic'"
     }
@@ -81,10 +81,8 @@ function getDisplayScale() {
 }
 
 function fitTextToWidth(text, templateConfig) {
-    const scale = getDisplayScale();
-    const fixedDisplayFontSize = 20;
-    const fontSize = Math.round(fixedDisplayFontSize * scale);
-    return fontSize;
+    const fontSize = canvas.width * 0.05; 
+    return Math.round(fontSize);
 }
 
 function renderCanvas(name) {
