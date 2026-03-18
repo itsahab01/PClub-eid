@@ -7,27 +7,31 @@ const templateOptions = document.querySelectorAll(".template-option");
 const templates = {
     template1: {
         image: new Image(),
-        src: "assets/Eid-programming.jpeg",
+        src: "assets/Eid-prog1.jpeg",
+
         textXRatio: 0.5,
         textYRatio: 0.765,
-        textColor: "#eeecec",
-        maxWidthRatio: 0.60,
-        startFontSizeRatio: 0.038,   // fraction of image height
-        minFontSize: 10,
-        fontWeight: "700",
+
+        textColor: "#eeecec" ,
+        maxWidthRatio: 0.40,
+        startFontSizeRatio: 22,   // fraction of image height
+        minFontSize: 22,
+        fontWeight: "bold",
         fontFamily: "'IBM Plex Sans Arabic'"
     },
 
     template2: {
         image: new Image(),
-        src: "assets/eid-template.png",
+        src: "assets/Eid-prog2.jpeg",
+
         textXRatio: 0.5,
-        textYRatio: 0.800,
-        textColor: "#080808",
+        textYRatio: 0.7,
+
+        textColor: "#eeecec",
         maxWidthRatio: 0.60,
-        startFontSizeRatio: 0.038,
-        minFontSize: 10,
-        fontWeight: "700",
+        startFontSizeRatio: 22,
+        minFontSize: 22,
+        fontWeight: "bold",
         fontFamily: "'IBM Plex Sans Arabic'"
     }
 };
@@ -71,18 +75,15 @@ function syncCanvasToTemplate() {
     }
 }
 
+function getDisplayScale() {
+    const displayedWidth = canvas.clientWidth || canvas.width;
+    return canvas.width / displayedWidth;
+}
+
 function fitTextToWidth(text, templateConfig) {
-    const maxWidth   = canvas.width  * templateConfig.maxWidthRatio;
-    const startSize  = Math.round(canvas.height * templateConfig.startFontSizeRatio);
-    let fontSize     = Math.max(startSize, templateConfig.minFontSize);
-
-    ctx.font = `${templateConfig.fontWeight} ${fontSize}px ${templateConfig.fontFamily}`;
-
-    while (ctx.measureText(text).width > maxWidth && fontSize > templateConfig.minFontSize) {
-        fontSize--;
-        ctx.font = `${templateConfig.fontWeight} ${fontSize}px ${templateConfig.fontFamily}`;
-    }
-
+    const scale = getDisplayScale();
+    const fixedDisplayFontSize = 20;
+    const fontSize = Math.round(fixedDisplayFontSize * scale);
     return fontSize;
 }
 
