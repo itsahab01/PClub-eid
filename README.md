@@ -14,6 +14,11 @@ This project allows users to enter their names and generate customized Eid greet
 - Simple and user-friendly interface
 - Responsive design
 
+Live Demo
+
+View the live project here:
+https://pclubeid-six.vercel.app
+
 ## Technologies Used
 
 - HTML5
